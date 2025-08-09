@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import type { Wine } from '../types/db'
 import { BRAND } from '../constants/branding'
+import { useAuth } from '../context/AuthContext'
 import Layout from '../components/Layout'
 
 type WineWithNotes = Wine & { tasting_notes?: string[] }
@@ -75,6 +76,7 @@ export default function Wines() {
     return Object.entries(groups).sort(([a], [b]) => a.localeCompare(b))
   }, [wines])
 
+  const { isAdmin } = useAuth()
   return (
     <Layout>
       <div
@@ -122,7 +124,7 @@ export default function Wines() {
                       href={`/wines/${w.id}`}
                       className="group w-[260px] overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm ring-1 ring-black/5 transition hover:shadow-md"
                     >
-                      <div className="w-full overflow-hidden bg-white">
+                      <div className="relative w-full overflow-hidden bg-white">
                         <div className="aspect-[1/1] w-full">
                           <img
                             src={w.image || '/hero_image.png'}
@@ -130,6 +132,18 @@ export default function Wines() {
                             className="h-full w-full object-cover"
                           />
                         </div>
+                        {isAdmin && (
+                          <div className="absolute right-2 top-2 flex gap-2">
+                            <button className="rounded-full bg-white/90 px-3 py-1 text-xs text-[#111827] ring-1 ring-black/10 hover:bg-white">
+                              Edit
+                            </button>
+                            <button className="rounded-full bg-[color:var(--brand-primary)]/90 p-2 text-white ring-1 ring-black/10 hover:bg-[color:var(--brand-primary)]" aria-label="Delete">
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M3 6h18M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2m-8 0 1 14a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2l1-14" />
+                              </svg>
+                            </button>
+                          </div>
+                        )}
                       </div>
                       <div className="p-4">
                         <h3 className="text-lg font-medium text-[#111827]" style={{ fontFamily: 'var(--brand-font-display)' }}>
