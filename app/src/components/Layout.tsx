@@ -23,10 +23,10 @@ export default function Layout({ children }: PropsWithChildren) {
             </Link>
             <div className="flex items-center gap-8">
               <Link to="/wines" className="text-base font-medium text-[#111827] hover:text-[color:var(--brand-primary)] transition">
-                Wines
+                Wine Menu
               </Link>
               <a href="#admin" className="text-base font-medium text-[#111827] hover:text-[color:var(--brand-primary)] transition">
-                Admin
+                Login
               </a>
             </div>
           </div>
@@ -41,7 +41,7 @@ export default function Layout({ children }: PropsWithChildren) {
             <p className="text-base opacity-90">{BRAND.appName} — playground app</p>
             <a
               className="text-base underline-offset-4 hover:underline"
-              href="https://github.com/franksnelling/vintager"
+              href="https://github.com/frank-895/vintager"
               target="_blank"
               rel="noreferrer noopener"
             >
