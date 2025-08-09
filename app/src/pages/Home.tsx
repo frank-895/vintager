@@ -1,4 +1,5 @@
 import { BRAND } from '../constants/branding'
+import Layout from '../components/Layout'
 
 function WineGlassIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -30,7 +31,8 @@ function MenuIcon(props: React.SVGProps<SVGSVGElement>) {
 
 export default function Home() {
   return (
-    <div
+    <Layout>
+      <div
       style={{
         ['--brand-primary' as any]: BRAND.colors.primary,
         ['--brand-secondary' as any]: BRAND.colors.secondary,
@@ -39,22 +41,8 @@ export default function Home() {
         ['--brand-font-body' as any]: BRAND.fonts.body,
         fontFamily: 'var(--brand-font-body)'
       }}
-      className="min-h-dvh flex flex-col bg-[color:var(--brand-secondary)] text-[#111827]"
+      className="text-[#111827]"
     >
-      {/* Navbar */}
-      <nav className="bg-[color:var(--brand-secondary)] border-b border-[color:var(--brand-primary)]/20">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="flex items-center justify-between py-5">
-            <a href="#" className="text-2xl font-semibold text-[color:var(--brand-primary)]" style={{ fontFamily: 'var(--brand-font-display)' }}>
-              {BRAND.appName}
-            </a>
-            <div className="flex items-center gap-8">
-              <a href="#examples" className="text-base font-medium text-[#111827] hover:text-[color:var(--brand-primary)] transition">Wines</a>
-              <a href="#admin" className="text-base font-medium text-[#111827] hover:text-[color:var(--brand-primary)] transition">Admin</a>
-            </div>
-          </div>
-        </div>
-      </nav>
 
       {/* Hero */}
       <header className="relative isolate bg-[color:var(--brand-primary)]/10 border-b border-[color:var(--brand-primary)]/20">
@@ -163,23 +151,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="mt-auto bg-[color:var(--brand-primary)] text-[color:var(--brand-secondary)] border-t border-[color:var(--brand-primary)]">
-        <div className="mx-auto max-w-7xl px-6 py-10 lg:px-8">
-          <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
-            <p className="text-base opacity-90">{BRAND.appName} — playground app</p>
-            <a
-              className="text-base underline-offset-4 hover:underline"
-              href="https://github.com/franksnelling/vintager"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              GitHub repository
-            </a>
-          </div>
-        </div>
-      </footer>
-    </div>
+      </div>
+    </Layout>
   )
 }
 
