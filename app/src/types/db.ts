@@ -11,6 +11,12 @@ export type Wine = {
   alcohol_content: string | null
   stock_level: number | null
   image?: string | null
+  price?: number | string | null
+  light_bold?: number | null
+  smooth_tannic?: number | null
+  dry_sweet?: number | null
+  soft_acidic?: number | null
+  description?: string | number | null
 }
 
 export type TasingNote = {
