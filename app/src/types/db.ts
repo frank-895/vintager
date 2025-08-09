@@ -8,8 +8,9 @@ export type Wine = {
   brand: number | null // schema says numeric
   varietal: string | null
   volume: string | null
-  alchohol_content: string | null
+  alcohol_content: string | null
   stock_level: number | null
+  image?: string | null
 }
 
 export type TasingNote = {

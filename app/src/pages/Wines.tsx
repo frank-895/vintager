@@ -18,7 +18,7 @@ export default function Wines() {
       // Fetch wines
       const { data: wineRows, error: wineError } = await supabase
         .from('wine')
-        .select('id, name, vintage, region, country, vineyard, brand, varietal, volume, alchohol_content, stock_level')
+        .select('id, name, vintage, region, country, vineyard, brand, varietal, volume, alcohol_content, stock_level, image')
 
       if (wineError) {
         setError(wineError.message)
@@ -115,44 +115,44 @@ export default function Wines() {
                 <h2 className="mb-4 text-2xl font-semibold text-[#111827]" style={{ fontFamily: 'var(--brand-font-display)' }}>
                   {country}
                 </h2>
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
                   {items.map((w) => (
                     <a
                       key={w.id}
                       href={`/wines/${w.id}`}
-                      className="group rounded-2xl border border-black/5 bg-white p-4 shadow-sm ring-1 ring-black/5 transition hover:shadow-md"
+                      className="group overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm ring-1 ring-black/5 transition hover:shadow-md"
                     >
-                      <div className="flex gap-4">
-                        <div className="flex-shrink-0">
+                      <div className="w-full overflow-hidden bg-white">
+                        <div className="aspect-[3/4] w-full">
                           <img
-                            src="/hero_image.png"
+                            src={w.image || '/hero_image.png'}
                             alt="Wine"
-                            className="h-24 w-20 rounded-md object-cover ring-1 ring-black/5"
+                            className="h-full w-full object-cover"
                           />
                         </div>
-                        <div className="min-w-0">
-                          <h3 className="truncate text-lg font-medium text-[#111827]" style={{ fontFamily: 'var(--brand-font-display)' }}>
-                            {w.name} {w.vintage ? `• ${w.vintage}` : ''}
-                          </h3>
-                          <p className="mt-1 truncate text-sm text-[color:var(--brand-text-muted)]">
-                            {[w.vineyard, w.varietal].filter(Boolean).join(' • ')}
-                          </p>
-                          <p className="mt-1 truncate text-sm text-[color:var(--brand-text-muted)]">{w.region || 'Other'}</p>
-                          {w.tasting_notes && w.tasting_notes.length > 0 && (
-                            <div className="mt-2 flex flex-wrap gap-1">
-                              {w.tasting_notes.slice(0, 3).map((t) => (
-                                <span key={t} className="rounded-full bg-[color:var(--brand-primary)]/10 px-2 py-0.5 text-xs text-[color:var(--brand-primary)]">
-                                  {t}
-                                </span>
-                              ))}
-                              {w.tasting_notes.length > 3 && (
-                                <span className="rounded-full bg-[color:var(--brand-primary)]/10 px-2 py-0.5 text-xs text-[color:var(--brand-primary)]">
-                                  +{w.tasting_notes.length - 3}
-                                </span>
-                              )}
-                            </div>
-                          )}
-                        </div>
+                      </div>
+                      <div className="p-4">
+                        <h3 className="text-lg font-medium text-[#111827]" style={{ fontFamily: 'var(--brand-font-display)' }}>
+                          {w.name} {w.vintage ? `• ${w.vintage}` : ''}
+                        </h3>
+                        <p className="mt-1 text-sm text-[color:var(--brand-text-muted)]">
+                          {[w.vineyard, w.varietal].filter(Boolean).join(' • ')}
+                        </p>
+                        <p className="mt-1 text-sm text-[color:var(--brand-text-muted)]">{w.region || 'Other'}</p>
+                        {w.tasting_notes && w.tasting_notes.length > 0 && (
+                          <div className="mt-2 flex flex-wrap gap-1">
+                            {w.tasting_notes.slice(0, 3).map((t) => (
+                              <span key={t} className="rounded-full bg-[color:var(--brand-primary)]/10 px-2 py-0.5 text-xs text-[color:var(--brand-primary)]">
+                                {t}
+                              </span>
+                            ))}
+                            {w.tasting_notes.length > 3 && (
+                              <span className="rounded-full bg-[color:var(--brand-primary)]/10 px-2 py-0.5 text-xs text-[color:var(--brand-primary)]">
+                                +{w.tasting_notes.length - 3}
+                              </span>
+                            )}
+                          </div>
+                        )}
                       </div>
                     </a>
                   ))}
