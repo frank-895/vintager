@@ -115,15 +115,15 @@ export default function Wines() {
                 <h2 className="mb-4 text-2xl font-semibold text-[#111827]" style={{ fontFamily: 'var(--brand-font-display)' }}>
                   {country}
                 </h2>
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
+                <div className="flex flex-wrap justify-center gap-6">
                   {items.map((w) => (
                     <a
                       key={w.id}
                       href={`/wines/${w.id}`}
-                      className="group overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm ring-1 ring-black/5 transition hover:shadow-md"
+                      className="group w-[260px] overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm ring-1 ring-black/5 transition hover:shadow-md"
                     >
                       <div className="w-full overflow-hidden bg-white">
-                        <div className="aspect-[3/4] w-full">
+                        <div className="aspect-[1/1] w-full">
                           <img
                             src={w.image || '/hero_image.png'}
                             alt="Wine"
