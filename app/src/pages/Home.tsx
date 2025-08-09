@@ -42,7 +42,7 @@ export default function Home() {
       className="min-h-dvh flex flex-col bg-[color:var(--brand-secondary)] text-[#111827]"
     >
       {/* Navbar */}
-      <nav className="bg-[color:var(--brand-secondary)]">
+      <nav className="bg-[color:var(--brand-secondary)] border-b border-[color:var(--brand-primary)]/20">
         <div className="mx-auto max-w-7xl px-6">
           <div className="flex items-center justify-between py-5">
             <a href="#" className="text-2xl font-semibold text-[color:var(--brand-primary)]" style={{ fontFamily: 'var(--brand-font-display)' }}>
@@ -57,7 +57,7 @@ export default function Home() {
       </nav>
 
       {/* Hero */}
-      <header className="relative isolate bg-[color:var(--brand-primary)]/10">
+      <header className="relative isolate bg-[color:var(--brand-primary)]/10 border-b border-[color:var(--brand-primary)]/20">
         <div className="mx-auto max-w-7xl px-6 lg:px-8" style={{ paddingTop: 40, paddingBottom: 40 }}>
           <div className="grid grid-cols-[auto_1fr] items-center gap-4 sm:gap-6 lg:gap-14">
             {/* Section 1: Text (tight width) */}
@@ -144,7 +144,7 @@ export default function Home() {
       </section>
 
       {/* Examples */}
-      <section id="examples" className="w-full bg-white/70">
+      <section id="examples" className="w-full bg-white/70 border-t border-[color:var(--brand-primary)]/15">
         <div className="mx-auto max-w-7xl px-6 py-16 sm:py-24 lg:px-8">
           <h2 className="text-4xl font-semibold tracking-tight text-[#111827] sm:text-5xl" style={{ fontFamily: 'var(--brand-font-display)' }}>
             Hospitality examples
@@ -164,7 +164,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="mt-auto bg-[color:var(--brand-primary)] text-[color:var(--brand-secondary)]">
+      <footer className="mt-auto bg-[color:var(--brand-primary)] text-[color:var(--brand-secondary)] border-t border-[color:var(--brand-primary)]">
         <div className="mx-auto max-w-7xl px-6 py-10 lg:px-8">
           <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
             <p className="text-base opacity-90">{BRAND.appName} — playground app</p>
