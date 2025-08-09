@@ -60,16 +60,16 @@ export default function Home() {
               <p className="mt-3 text-xl sm:text-2xl text-[#374151]">
                 Explore wine lists and hospitality menus
               </p>
-              <div className="mt-10 flex gap-4">
+              <div className="mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center">
                 <a
                   href="/wines"
-                  className="inline-flex items-center rounded-full bg-[color:var(--brand-primary)] px-7 py-3.5 text-white shadow-sm transition hover:opacity-95"
+                  className="inline-flex items-center justify-center rounded-full bg-[color:var(--brand-primary)] px-7 py-3.5 text-white shadow-sm transition hover:opacity-95 w-full sm:w-auto text-center"
                 >
                   Wine Menu
                 </a>
                 <a
                   href="https://github.com/frank-895/vintager"
-                  className="inline-flex items-center rounded-full border border-[color:var(--brand-primary)] bg-white px-7 py-3.5 text-[color:var(--brand-primary)] transition hover:bg-[color:var(--brand-primary)] hover:text-white"
+                  className="inline-flex items-center justify-center rounded-full border border-[color:var(--brand-primary)] bg-white px-7 py-3.5 text-[color:var(--brand-primary)] transition hover:bg-[color:var(--brand-primary)] hover:text-white w-full sm:w-auto text-center"
                   target="_blank"
                   rel="noreferrer noopener"
                 >
