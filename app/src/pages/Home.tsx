@@ -32,60 +32,81 @@ export default function Home() {
   return (
     <div
       style={{
-        // Expose brand palette as CSS variables consumable by Tailwind arbitrary values
         ['--brand-primary' as any]: BRAND.colors.primary,
         ['--brand-secondary' as any]: BRAND.colors.secondary,
         ['--brand-text-muted' as any]: BRAND.colors.textMuted,
-        fontFamily: BRAND.fontFamily,
+        ['--brand-font-display' as any]: BRAND.fonts.display,
+        ['--brand-font-body' as any]: BRAND.fonts.body,
+        fontFamily: 'var(--brand-font-body)'
       }}
       className="min-h-dvh flex flex-col bg-[color:var(--brand-secondary)] text-[#111827]"
     >
-      {/* Hero */}
-      <header className="relative isolate">
-        <div className="mx-auto max-w-7xl px-6 pt-20 pb-24 sm:pt-28 sm:pb-28 lg:px-8">
-          <div className="flex items-center gap-3 text-sm text-[color:var(--brand-primary)]/80">
-            <WineGlassIcon className="h-5 w-5" />
-            <span>Playground</span>
-          </div>
-          <h1 className="mt-6 text-5xl font-semibold tracking-tight sm:text-6xl text-[color:var(--brand-primary)]">
-            {BRAND.appName}
-          </h1>
-          <p className="mt-4 text-xl sm:text-2xl text-[#374151]">
-            A playground for exploring wine lists and hospitality menus
-          </p>
-          <p className="mt-6 max-w-3xl text-base leading-7 text-[color:var(--brand-text-muted)]">
-            This non‑production demo showcases how teams in hospitality can explore and
-            present product catalogs — from curated wine programs to seasonal menus —
-            in a clean, modern format designed for discovery.
-          </p>
-          <div className="mt-10 flex gap-4">
-            <a
-              href="#how-it-works"
-              className="inline-flex items-center rounded-full bg-[color:var(--brand-primary)] px-6 py-3 text-white shadow-sm transition hover:opacity-95"
-            >
-              See how it works
+      {/* Navbar */}
+      <nav className="bg-[color:var(--brand-secondary)]">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="flex items-center justify-between py-5">
+            <a href="#" className="text-2xl font-semibold text-[color:var(--brand-primary)]" style={{ fontFamily: 'var(--brand-font-display)' }}>
+              {BRAND.appName}
             </a>
-            <a
-              href="#examples"
-              className="inline-flex items-center rounded-full border border-[color:var(--brand-primary)] bg-white px-6 py-3 text-[color:var(--brand-primary)] transition hover:bg-[color:var(--brand-primary)] hover:text-white"
-            >
-              Browse examples
-            </a>
+            <div className="flex items-center gap-8">
+              <a href="#examples" className="text-base font-medium text-[#111827] hover:text-[color:var(--brand-primary)] transition">Wines</a>
+              <a href="#admin" className="text-base font-medium text-[#111827] hover:text-[color:var(--brand-primary)] transition">Admin</a>
+            </div>
           </div>
         </div>
+      </nav>
 
-        {/* Subtle angled accent */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-64 bg-[color:var(--brand-primary)]/5" />
+      {/* Hero */}
+      <header className="relative isolate bg-[color:var(--brand-primary)]/10">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8" style={{ paddingTop: 40, paddingBottom: 40 }}>
+          <div className="grid grid-cols-[auto_1fr] items-center gap-4 sm:gap-6 lg:gap-14">
+            {/* Section 1: Text (tight width) */}
+            <div className="justify-self-start max-w-xl">
+              <div className="flex items-center gap-3 text-base text-[color:var(--brand-primary)]/80">
+                <WineGlassIcon className="h-6 w-6" />
+                <span>Playground</span>
+              </div>
+              <h1 className="mt-6 text-6xl sm:text-7xl tracking-tight text-[color:var(--brand-primary)]" style={{ fontFamily: 'var(--brand-font-display)', fontWeight: 700 }}>
+                {BRAND.appName}
+              </h1>
+              <p className="mt-3 text-xl sm:text-2xl text-[#374151]">
+                Explore wine lists and hospitality menus
+              </p>
+              <div className="mt-10 flex gap-4">
+                <a
+                  href="#how-it-works"
+                  className="inline-flex items-center rounded-full bg-[color:var(--brand-primary)] px-7 py-3.5 text-white shadow-sm transition hover:opacity-95"
+                >
+                  How it works
+                </a>
+                <a
+                  href="#examples"
+                  className="inline-flex items-center rounded-full border border-[color:var(--brand-primary)] bg-white px-7 py-3.5 text-[color:var(--brand-primary)] transition hover:bg-[color:var(--brand-primary)] hover:text-white"
+                >
+                  Examples
+                </a>
+              </div>
+            </div>
+            {/* Section 2: Image (fills remaining space, centered). Hidden only under 480px */}
+            <div className="flex w-full justify-center max-[479px]:hidden">
+              <img
+                src="/hero_image.png"
+                alt="Hospitality hero"
+                className="w-auto max-w-[200px] sm:max-w-[240px] md:max-w-[260px] lg:max-w-[260px] xl:max-w-[260px] rounded-lg object-contain"
+              />
+            </div>
+          </div>
+        </div>
+        {/* Single, unified background — no overlays */}
       </header>
 
       {/* How it works */}
-      <section id="how-it-works" className="mx-auto w-full max-w-7xl px-6 py-16 sm:py-24 lg:px-8">
-        <h2 className="text-3xl font-semibold tracking-tight text-[#111827] sm:text-4xl">
+      <section id="how-it-works" className="mx-auto w-full max-w-7xl px-6 py-20 sm:py-28 lg:px-8">
+        <h2 className="text-4xl font-semibold tracking-tight text-[#111827] sm:text-5xl" style={{ fontFamily: 'var(--brand-font-display)' }}>
           How it works
         </h2>
-        <p className="mt-3 max-w-2xl text-[color:var(--brand-text-muted)]">
-          Clear, glanceable cards help every guest and team member find what matters —
-          whether that’s a glass pour, a pairing, or today’s seasonal features.
+        <p className="mt-4 max-w-2xl text-[color:var(--brand-text-muted)]">
+          Glanceable cards make exploring easy for the team and your guests.
         </p>
 
         <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -109,17 +130,14 @@ export default function Home() {
               Icon: MenuIcon,
             },
           ].map(({ title, body, Icon }) => (
-            <div
-              key={title}
-              className="group rounded-2xl border border-black/5 bg-white p-6 shadow-sm ring-1 ring-black/5 transition hover:shadow-md"
-            >
+            <div key={title} className="group rounded-2xl border border-black/5 bg-white p-8 shadow-sm ring-1 ring-black/5 transition hover:shadow-md">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[color:var(--brand-primary)]/10 text-[color:var(--brand-primary)]">
-                  <Icon className="h-5 w-5" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[color:var(--brand-primary)]/10 text-[color:var(--brand-primary)]">
+                  <Icon className="h-6 w-6" />
                 </div>
-                <h3 className="text-lg font-medium text-[#111827]">{title}</h3>
+                <h3 className="text-xl font-medium text-[#111827]" style={{ fontFamily: 'var(--brand-font-display)' }}>{title}</h3>
               </div>
-              <p className="mt-3 text-[color:var(--brand-text-muted)]">{body}</p>
+              <p className="mt-4 text-[color:var(--brand-text-muted)]">{body}</p>
             </div>
           ))}
         </div>
@@ -128,19 +146,16 @@ export default function Home() {
       {/* Examples */}
       <section id="examples" className="w-full bg-white/70">
         <div className="mx-auto max-w-7xl px-6 py-16 sm:py-24 lg:px-8">
-          <h2 className="text-3xl font-semibold tracking-tight text-[#111827] sm:text-4xl">
+          <h2 className="text-4xl font-semibold tracking-tight text-[#111827] sm:text-5xl" style={{ fontFamily: 'var(--brand-font-display)' }}>
             Hospitality examples
           </h2>
-          <p className="mt-3 max-w-2xl text-[color:var(--brand-text-muted)]">
+          <p className="mt-4 max-w-2xl text-[color:var(--brand-text-muted)]">
             Flexible enough for wine, cocktails, desserts, and daily specials.
           </p>
 
           <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
             {['Wines', 'Cocktails', 'Desserts', 'Daily Specials'].map((label) => (
-              <div
-                key={label}
-                className="rounded-xl border border-black/5 bg-[color:var(--brand-secondary)] px-4 py-10 text-center font-medium text-[color:var(--brand-primary)] shadow-sm"
-              >
+              <div key={label} className="rounded-xl border border-black/5 bg-[color:var(--brand-secondary)] px-6 py-14 text-center font-medium text-[color:var(--brand-primary)] shadow-sm" style={{ fontFamily: 'var(--brand-font-display)' }}>
                 {label}
               </div>
             ))}
@@ -150,11 +165,11 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="mt-auto bg-[color:var(--brand-primary)] text-[color:var(--brand-secondary)]">
-        <div className="mx-auto max-w-7xl px-6 py-8 lg:px-8">
-          <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-            <p className="text-sm/6 opacity-90">{BRAND.appName} — playground app</p>
+        <div className="mx-auto max-w-7xl px-6 py-10 lg:px-8">
+          <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
+            <p className="text-base opacity-90">{BRAND.appName} — playground app</p>
             <a
-              className="text-sm/6 underline-offset-4 hover:underline"
+              className="text-base underline-offset-4 hover:underline"
               href="https://github.com/franksnelling/vintager"
               target="_blank"
               rel="noreferrer noopener"
