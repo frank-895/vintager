@@ -5,6 +5,9 @@ import type { Wine } from '../types/db'
 import Layout from '../components/Layout'
 import { BRAND } from '../constants/branding'
 import ResponsiveImage from '../components/ResponsiveImage'
+import { useAuth } from '../context/AuthContext'
+import Dialog from '../components/Dialog'
+import WineForm from '../components/WineForm'
 
 function Scale({ labelLeft, labelRight, value }: { labelLeft: string; labelRight: string; value: number }) {
   const clamped = Math.max(0, Math.min(5, Number(value) || 0))
@@ -28,6 +31,10 @@ export default function WineDetails() {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [tastingNotes, setTastingNotes] = useState<string[]>([])
+  const [tastingNoteIds, setTastingNoteIds] = useState<number[]>([])
+  const { isAdmin } = useAuth()
+  const [confirmOpen, setConfirmOpen] = useState(false)
+  const [formOpen, setFormOpen] = useState(false)
 
   useEffect(() => {
     async function load() {
@@ -51,7 +58,8 @@ export default function WineDetails() {
           .select('tasting_note_id')
           .eq('wine_id', wineId)
         if (!mapErr && mappings && mappings.length > 0) {
-          const ids = mappings.map((m: any) => m.tasting_note_id)
+          const ids = mappings.map((m: any) => m.tasting_note_id as number)
+          setTastingNoteIds(ids)
           const { data: notes, error: notesErr } = await supabase
             .from('tasting_note')
             .select('id, tasting_note')
@@ -61,6 +69,7 @@ export default function WineDetails() {
           }
         } else {
           setTastingNotes([])
+          setTastingNoteIds([])
         }
       }
       setLoading(false)
@@ -82,10 +91,29 @@ export default function WineDetails() {
         className="bg-[color:var(--brand-secondary)]"
       >
         <div className="mx-auto max-w-7xl px-6 py-10 lg:px-8">
-          <div className="mb-6 text-sm">
+          <div className="mb-6 flex items-center justify-between text-sm">
             <Link to="/wines" className="text-[color:var(--brand-primary)] underline-offset-4 hover:underline">
               ← Back to wines
             </Link>
+            {isAdmin && (
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setFormOpen(true)}
+                  className="h-8 cursor-pointer inline-flex items-center justify-center rounded-full bg-white/90 px-3 text-xs text-[#111827] ring-1 ring-black/10 hover:bg-white"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => setConfirmOpen(true)}
+                  className="h-8 w-8 cursor-pointer inline-flex items-center justify-center rounded-full bg-[color:var(--brand-primary)]/90 text-white ring-1 ring-black/10 hover:bg-[color:var(--brand-primary)]"
+                  aria-label="Delete"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 6h18M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2m-8 0 1 14a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2l1-14" />
+                  </svg>
+                </button>
+              </div>
+            )}
           </div>
 
           {loading && <div className="py-20 text-center text-[color:var(--brand-text-muted)]">Loading…</div>}
@@ -167,6 +195,52 @@ export default function WineDetails() {
             </div>
           )}
         </div>
+        <Dialog
+          open={confirmOpen}
+          onClose={() => setConfirmOpen(false)}
+          title="No changes will be made."
+          titleClassName="text-lg font-semibold text-[color:var(--brand-primary)]"
+          footer={
+            <div className="flex gap-3">
+              <button className="rounded-full border border-[color:var(--brand-primary)] px-5 py-2 text-[color:var(--brand-primary)] hover:bg-[color:var(--brand-primary)]/10" onClick={() => setConfirmOpen(false)}>
+                Cancel
+              </button>
+              <button className="rounded-full bg-[color:var(--brand-primary)] px-5 py-2 text-white hover:opacity-95" onClick={() => setConfirmOpen(false)}>
+                Delete
+              </button>
+            </div>
+          }
+        >
+          This is a playground app. The delete functionality is not currently implemented.
+        </Dialog>
+        <Dialog open={formOpen} onClose={() => setFormOpen(false)} title="Edit wine" containerClassName="max-w-2xl">
+          {wine && (
+            <WineForm
+              initial={{
+                name: wine.name,
+                vintage: wine.vintage ?? '',
+                region: wine.region || '',
+                country: wine.country || '',
+                vineyard: wine.vineyard || '',
+                brand: String(wine.brand ?? ''),
+                varietal: wine.varietal || '',
+                volume: wine.volume || '750 ml',
+                alcohol_content: wine.alcohol_content || '13% ABV',
+                price: typeof (wine as any).price === 'number' ? String((wine as any).price) : String((wine as any).price || ''),
+                stock_level: wine.stock_level ?? '',
+                light_bold: wine.light_bold ?? 0,
+                smooth_tannic: wine.smooth_tannic ?? 0,
+                dry_sweet: wine.dry_sweet ?? 0,
+                soft_acidic: wine.soft_acidic ?? 0,
+                description: String(wine.description ?? ''),
+                image: (wine as any)?.image || '',
+                tasting_note_ids: tastingNoteIds,
+              }}
+              onCancel={() => setFormOpen(false)}
+              onConfirm={() => setFormOpen(false)}
+            />
+          )}
+        </Dialog>
       </div>
     </Layout>
   )
