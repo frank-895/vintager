@@ -4,6 +4,7 @@ import type { Wine } from '../types/db'
 import { BRAND } from '../constants/branding'
 import { useAuth } from '../context/AuthContext'
 import Layout from '../components/Layout'
+import ResponsiveImage from '../components/ResponsiveImage'
 
 type WineWithNotes = Wine & { tasting_notes?: string[] }
 
@@ -126,10 +127,11 @@ export default function Wines() {
                     >
                       <div className="relative w-full overflow-hidden bg-white">
                         <div className="aspect-[1/1] w-full">
-                          <img
+                          <ResponsiveImage
                             src={w.image || '/hero_image.png'}
                             alt="Wine"
                             className="h-full w-full object-cover"
+                            sizes="(max-width: 640px) 90vw, 260px"
                           />
                         </div>
                         {isAdmin && (
