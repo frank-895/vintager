@@ -540,6 +540,17 @@ export default function Wines() {
         )}
         </div>
 
+        {/* More info teaser */}
+        <section className="mt-10 border-t border-[color:var(--brand-primary)]/15 bg-white/70">
+          <div className="mx-auto max-w-7xl px-6 py-10 lg:px-8">
+            <div className="rounded-2xl bg-white p-6 sm:p-8 ring-1 ring-black/5 shadow-sm">
+              <h2 className="text-2xl font-semibold text-[#111827]" style={{ fontFamily: 'var(--brand-font-display)' }}>Want to learn more?</h2>
+              <p className="mt-2 text-[color:var(--brand-text-muted)]">Read about features, examples, and how this playground works on the More Info page.</p>
+              <a href="/info" className="mt-4 inline-flex items-center justify-center rounded-full bg-[color:var(--brand-primary)] px-5 py-2.5 text-sm text-white transition hover:opacity-95 cursor-pointer">Go to More Info</a>
+            </div>
+          </div>
+        </section>
+
         {/* Filters dialog (mobile) */}
         <Dialog open={filtersOpen} onClose={() => setFiltersOpen(false)} title="Filters" containerClassName="max-w-xl">
           <div className="space-y-6">
