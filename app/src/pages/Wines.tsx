@@ -74,6 +74,7 @@ export default function Wines() {
   const [filtersOpen, setFiltersOpen] = useState(false)
   const [searchText, setSearchText] = useState('')
   const [selectedCountries, setSelectedCountries] = useState<string[]>([])
+  const [selectedVarietals, setSelectedVarietals] = useState<string[]>([])
   const [selectedNotes, setSelectedNotes] = useState<string[]>([])
   const [notesMatchAll, setNotesMatchAll] = useState(false)
   const [vintageMin, setVintageMin] = useState<number | ''>('')
@@ -96,6 +97,15 @@ export default function Wines() {
     const set = new Set<string>()
     for (const w of wines) {
       ;(w.tasting_notes || []).forEach((n) => set.add(n))
+    }
+    return Array.from(set).sort((a, b) => a.localeCompare(b))
+  }, [wines])
+
+  const varietalOptions = useMemo(() => {
+    const set = new Set<string>()
+    for (const w of wines) {
+      const v = ((w as any).varietal as string | null)?.trim()
+      if (v) set.add(v)
     }
     return Array.from(set).sort((a, b) => a.localeCompare(b))
   }, [wines])
@@ -127,6 +137,7 @@ export default function Wines() {
     const text = searchText.trim().toLowerCase()
     const notes = new Set(selectedNotes)
     const countries = new Set(selectedCountries)
+    const varietals = new Set(selectedVarietals)
     const vMin = typeof vintageMin === 'number' ? vintageMin : -Infinity
     const vMax = typeof vintageMax === 'number' ? vintageMax : Infinity
     const pMin = typeof priceMin === 'number' ? priceMin : -Infinity
@@ -153,6 +164,12 @@ export default function Wines() {
       return c ? countries.has(c) : countries.has('Other')
     }
 
+    const matchesVarietal = (w: WineWithNotes) => {
+      if (varietals.size === 0) return true
+      const v = ((w as any).varietal as string | null)?.trim()
+      return v ? varietals.has(v) : false
+    }
+
     const matchesNotes = (w: WineWithNotes) => {
       if (notes.size === 0) return true
       const list = new Set((w.tasting_notes || []))
@@ -176,7 +193,7 @@ export default function Wines() {
       return p >= pMin && p <= pMax
     }
 
-    const filtered = wines.filter((w) => matchesText(w) && matchesCountry(w) && matchesNotes(w) && matchesVintage(w) && matchesPrice(w))
+    const filtered = wines.filter((w) => matchesText(w) && matchesCountry(w) && matchesVarietal(w) && matchesNotes(w) && matchesVintage(w) && matchesPrice(w))
 
     const sorted = filtered.slice().sort((a, b) => {
       const aName = String((a as any).name || '')
@@ -204,7 +221,7 @@ export default function Wines() {
     })
 
     return sorted
-  }, [wines, searchText, selectedCountries, selectedNotes, notesMatchAll, vintageMin, vintageMax, priceMin, priceMax, sortBy])
+  }, [wines, searchText, selectedCountries, selectedVarietals, selectedNotes, notesMatchAll, vintageMin, vintageMax, priceMin, priceMax, sortBy])
 
   const groupedFiltered = useMemo(() => {
     const groups: Record<string, WineWithNotes[]> = {}
@@ -220,6 +237,7 @@ export default function Wines() {
   function clearAll() {
     setSearchText('')
     setSelectedCountries([])
+    setSelectedVarietals([])
     setSelectedNotes([])
     setNotesMatchAll(false)
     setVintageMin('')
@@ -279,7 +297,7 @@ export default function Wines() {
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-[300px_1fr]">
             {/* Sidebar (desktop) */}
             <aside className="hidden lg:block">
-              <div className="sticky top-6 space-y-6 rounded-2xl bg-white p-5 ring-1 ring-black/10">
+              <div className="sticky top-6 max-h-[calc(100vh-2rem)] overflow-auto space-y-6 rounded-2xl bg-white p-5 ring-1 ring-black/10">
                 <div>
                   <div className="mb-2 text-sm font-medium text-[#111827]">Search</div>
                   <input
@@ -321,6 +339,27 @@ export default function Wines() {
                             }
                           />
                           <span>{c}</span>
+                        </label>
+                      )
+                    })}
+                  </div>
+                </div>
+
+                <div>
+                  <div className="mb-2 text-sm font-medium text-[#111827]">Grape variety</div>
+                  <div className="max-h-40 overflow-auto rounded-lg border border-black/10 p-2">
+                    {varietalOptions.map((v) => {
+                      const checked = selectedVarietals.includes(v)
+                      return (
+                        <label key={v} className="mb-1 flex cursor-pointer items-center gap-2 text-sm text-[#111827]">
+                          <input
+                            type="checkbox"
+                            checked={checked}
+                            onChange={() =>
+                              setSelectedVarietals((prev) => (checked ? prev.filter((x) => x !== v) : [...prev, v]))
+                            }
+                          />
+                          <span>{v}</span>
                         </label>
                       )
                     })}
@@ -534,6 +573,27 @@ export default function Wines() {
                         }
                       />
                       <span>{c}</span>
+                    </label>
+                  )
+                })}
+              </div>
+            </div>
+
+            <div>
+              <div className="mb-2 text-sm font-medium text-[#111827]">Grape variety</div>
+              <div className="max-h-40 overflow-auto rounded-lg border border-black/10 p-2">
+                {varietalOptions.map((v) => {
+                  const checked = selectedVarietals.includes(v)
+                  return (
+                    <label key={v} className="mb-1 flex cursor-pointer items-center gap-2 text-sm text-[#111827]">
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={() =>
+                          setSelectedVarietals((prev) => (checked ? prev.filter((x) => x !== v) : [...prev, v]))
+                        }
+                      />
+                      <span>{v}</span>
                     </label>
                   )
                 })}
