@@ -17,16 +17,24 @@ export default function ResponsiveImage({ src, alt, sizes = '(max-width: 640px) 
       return <img src={src} alt={alt} className={className} />
     }
 
-    const mkUrl = (w: number) => {
+    const mkUrl = (w: number, format?: 'webp' | 'avif') => {
       const url = new URL(u.href)
       // Many setups proxy through an image optimization function; if you’ve set one up, swap here.
-      // For raw storage, if you’ve enabled CDN resizing, append something like `?width=w`.
+      // For Supabase Storage transformations, you can use width/quality/format params.
       url.searchParams.set('width', String(w))
+      if (format) url.searchParams.set('format', format)
       return url.toString()
     }
 
-    const srcSet = [320, 480, 640, 768, 1024].map((w) => `${mkUrl(w)} ${w}w`).join(', ')
-    return <img src={mkUrl(1024)} srcSet={srcSet} sizes={sizes} alt={alt} className={className} />
+    const widths = [320, 480, 640, 768, 1024]
+    const srcSetWebp = widths.map((w) => `${mkUrl(w, 'webp')} ${w}w`).join(', ')
+    const srcSetFallback = widths.map((w) => `${mkUrl(w)} ${w}w`).join(', ')
+    return (
+      <picture>
+        <source type="image/webp" srcSet={srcSetWebp} sizes={sizes} />
+        <img src={mkUrl(1024)} srcSet={srcSetFallback} sizes={sizes} alt={alt} className={className} />
+      </picture>
+    )
   } catch {
     return <img src={src} alt={alt} className={className} />
   }
