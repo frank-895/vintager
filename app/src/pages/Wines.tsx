@@ -68,8 +68,8 @@ export default function Wines() {
   const winesByCountry = useMemo(() => {
     const groups: Record<string, WineWithNotes[]> = {}
     for (const w of wines) {
-      const country = (w as any).country as string | null
-      const key = country.trim() || 'Other'
+      const country = ((w as any).country as string | null) ?? 'Other'
+      const key = country ? country.trim() : 'Other'
       if (!groups[key]) groups[key] = []
       groups[key].push(w)
     }
