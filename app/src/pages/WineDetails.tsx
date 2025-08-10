@@ -91,7 +91,7 @@ export default function WineDetails() {
           {error && <div className="py-4 text-[color:var(--brand-primary)]">{error}</div>}
           {!loading && !error && wine && (
             <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[320px_1fr]">
-              <div className="relative overflow-hidden rounded-2xl bg-white ring-1 ring-black/5 max-w-full xs:max-w-none mx-auto xs:mx-0 self-start">
+              <div className="relative overflow-hidden rounded-2xl bg-white ring-1 ring-black/5 max-w-full xs:max-w-none mx-auto xs:mx-0 self-start lg:self-center">
                 <div className="w-full h-96 xs:h-96 sm:h-96 lg:h-96">
                   <img src={wine.image || '/hero_image.png'} alt={wine.name} className="h-full w-full object-cover" />
                 </div>
@@ -103,7 +103,7 @@ export default function WineDetails() {
                   </div>
                 )}
               </div>
-              <div>
+              <div className="self-start">
                 <h1 className="text-4xl font-semibold tracking-tight text-[#111827]" style={{ fontFamily: 'var(--brand-font-display)' }}>
                   {wine.name} {wine.vintage ? `• ${wine.vintage}` : ''}
                 </h1>
