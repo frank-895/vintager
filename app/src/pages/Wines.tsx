@@ -19,7 +19,7 @@ export default function Wines() {
       // Fetch wines
       const { data: wineRows, error: wineError } = await supabase
         .from('wine')
-        .select('id, name, vintage, region, country, vineyard, brand, varietal, volume, alcohol_content, stock_level, image')
+        .select('id, name, vintage, region, country, vineyard, brand, varietal, volume, alcohol_content, stock_level, image, price')
 
       if (wineError) {
         setError(wineError.message)
@@ -142,6 +142,13 @@ export default function Wines() {
                                 <path d="M3 6h18M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2m-8 0 1 14a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2l1-14" />
                               </svg>
                             </button>
+                          </div>
+                        )}
+                        {w.price !== undefined && w.price !== null && (
+                          <div className="absolute bottom-2 right-2 rounded-full bg-[color:var(--brand-primary)] px-3 py-1 text-[10px] sm:text-xs text-white shadow-sm">
+                            <span className="font-semibold">
+                              {typeof w.price === 'number' ? `$${w.price.toFixed(2)}` : String(w.price)}
+                            </span>
                           </div>
                         )}
                       </div>
