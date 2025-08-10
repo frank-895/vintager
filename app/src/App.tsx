@@ -10,7 +10,8 @@ export default function App() {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Wines />} />
+          <Route path="/info" element={<Home />} />
           <Route path="/wines" element={<Wines />} />
           <Route path="/wines/:id" element={<WineDetails />} />
           <Route path="/login" element={<Login />} />

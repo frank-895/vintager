@@ -24,8 +24,8 @@ export default function Layout({ children }: PropsWithChildren) {
               {BRAND.appName}
             </Link>
             <div className="flex items-center gap-8">
-              <Link to="/wines" className="text-base font-medium text-[#111827] hover:text-[color:var(--brand-primary)] transition">
-                Wine Menu
+              <Link to="/info" className="text-base font-medium text-[#111827] hover:text-[color:var(--brand-primary)] transition cursor-pointer">
+                More Info
               </Link>
               {isAdmin ? (
                 <button
