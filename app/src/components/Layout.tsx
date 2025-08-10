@@ -1,8 +1,10 @@
-import { PropsWithChildren } from 'react'
+import type { PropsWithChildren } from 'react'
 import { Link } from 'react-router-dom'
 import { BRAND } from '../constants/branding'
+import { useAuth } from '../context/AuthContext'
 
 export default function Layout({ children }: PropsWithChildren) {
+  const { isAdmin, logout } = useAuth()
   return (
     <div
       style={{
@@ -25,9 +27,18 @@ export default function Layout({ children }: PropsWithChildren) {
               <Link to="/wines" className="text-base font-medium text-[#111827] hover:text-[color:var(--brand-primary)] transition">
                 Wine Menu
               </Link>
-              <a href="#admin" className="text-base font-medium text-[#111827] hover:text-[color:var(--brand-primary)] transition">
-                Login
-              </a>
+              {isAdmin ? (
+                <button
+                  onClick={logout}
+                  className="text-base font-medium text-[#111827] hover:text-[color:var(--brand-primary)] transition"
+                >
+                  Logout
+                </button>
+              ) : (
+                <Link to="/login" className="text-base font-medium text-[#111827] hover:text-[color:var(--brand-primary)] transition">
+                  Login
+                </Link>
+              )}
             </div>
           </div>
         </div>
