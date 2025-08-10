@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext'
 import Layout from '../components/Layout'
 import ResponsiveImage from '../components/ResponsiveImage'
 import Dialog from '../components/Dialog'
+import WineForm from '../components/WineForm'
 
 type WineWithNotes = Wine & { tasting_notes?: string[] }
 
@@ -80,6 +81,7 @@ export default function Wines() {
 
   const { isAdmin } = useAuth()
   const [confirmOpen, setConfirmOpen] = useState(false)
+  const [formOpen, setFormOpen] = useState<false | { mode: 'create' | 'edit'; initial?: any }>(false)
   return (
     <Layout>
       <div
@@ -98,7 +100,17 @@ export default function Wines() {
           <h1 className="text-4xl sm:text-5xl tracking-tight text-[color:var(--brand-primary)]" style={{ fontFamily: 'var(--brand-font-display)', fontWeight: 700 }}>
             Wines
           </h1>
-          <p className="text-sm text-[color:var(--brand-text-muted)]">{wines.length} items</p>
+          <div className="flex items-center gap-3">
+            <p className="text-sm text-[color:var(--brand-text-muted)]">{wines.length} items</p>
+            {isAdmin && (
+              <button
+                onClick={() => setFormOpen({ mode: 'create' })}
+                className="rounded-full bg-[color:var(--brand-primary)] px-4 py-2 text-sm text-white hover:opacity-95"
+              >
+                Add wine
+              </button>
+            )}
+          </div>
         </header>
 
         {loading && (
@@ -138,7 +150,49 @@ export default function Wines() {
                         </div>
                         {isAdmin && (
                           <div className="absolute right-2 top-2 flex gap-2">
-                            <button className="rounded-full bg-white/90 px-3 py-1 text-xs text-[#111827] ring-1 ring-black/10 hover:bg-white">
+                            <button
+                              onClick={async (e) => {
+                                e.preventDefault()
+                                // Fetch full wine and note ids for edit prefill
+                                const { data: full, error: fe } = await supabase
+                                  .from('wine')
+                                  .select('id, name, vintage, region, country, vineyard, brand, varietal, volume, alcohol_content, stock_level, light_bold, smooth_tannic, dry_sweet, soft_acidic, description, image, price')
+                                  .eq('id', w.id)
+                                  .maybeSingle()
+                                let tastingIds: number[] = []
+                                const { data: maps } = await supabase
+                                  .from('wine_tast_note')
+                                  .select('tasting_note_id')
+                                  .eq('wine_id', w.id)
+                                if (maps) tastingIds = maps.map((m: any) => m.tasting_note_id as number)
+                                setFormOpen({
+                                  mode: 'edit',
+                                  initial: full
+                                    ? {
+                                        name: (full as any).name || '',
+                                        vintage: (full as any).vintage ?? '',
+                                        region: (full as any).region || '',
+                                        country: (full as any).country || '',
+                                        vineyard: (full as any).vineyard || '',
+                                        brand: String((full as any).brand ?? ''),
+                                        varietal: (full as any).varietal || '',
+                                        volume: (full as any).volume || '750 ml',
+                                        alcohol_content: (full as any).alcohol_content || '13% ABV',
+                                        price: typeof (full as any).price === 'number' ? String((full as any).price) : String((full as any).price || ''),
+                                        stock_level: (full as any).stock_level ?? '',
+                                        light_bold: (full as any).light_bold ?? 0,
+                                        smooth_tannic: (full as any).smooth_tannic ?? 0,
+                                        dry_sweet: (full as any).dry_sweet ?? 0,
+                                        soft_acidic: (full as any).soft_acidic ?? 0,
+                                        description: String((full as any).description ?? ''),
+                                        image: (full as any).image || '',
+                                        tasting_note_ids: tastingIds,
+                                      }
+                                    : undefined,
+                                })
+                              }}
+                              className="cursor-pointer rounded-full bg-white/90 px-3 py-1 text-xs text-[#111827] ring-1 ring-black/10 hover:bg-white"
+                            >
                               Edit
                             </button>
                             <a
@@ -212,6 +266,15 @@ export default function Wines() {
           }
         >
           This is a playground app. The delete functionality is not currently implemented.
+        </Dialog>
+
+        <Dialog
+          open={!!formOpen}
+          onClose={() => setFormOpen(false)}
+          title={formOpen && formOpen.mode === 'edit' ? 'Edit wine' : 'Add wine'}
+          containerClassName="max-w-2xl"
+        >
+          <WineForm initial={(formOpen && formOpen.initial) || undefined} onCancel={() => setFormOpen(false)} onConfirm={() => setFormOpen(false)} />
         </Dialog>
       </div>
     </Layout>

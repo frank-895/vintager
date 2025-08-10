@@ -4,3 +4,46 @@
 html, body, #root {
   height: 100%;
 }
+
+/* Branded range slider */
+.range-brand {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  border-radius: 9999px;
+  background: linear-gradient(var(--brand-primary), var(--brand-primary)) 0/var(--percent, 0%) 100% no-repeat, #e5e7eb;
+}
+.range-brand:focus { outline: none; }
+.range-brand::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: var(--brand-primary);
+  border-radius: 9999px;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+.range-brand::-moz-range-track {
+  height: 8px;
+  border-radius: 9999px;
+  background: transparent;
+}
+.range-brand::-moz-range-progress {
+  height: 8px;
+  border-radius: 9999px;
+  background: var(--brand-primary);
+}
+.range-brand::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background: var(--brand-primary);
+  border: 2px solid #fff;
+  border-radius: 9999px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Ensure all interactive elements show pointer */
+a, button, [role="button"], .cursor-pointer {
+  cursor: pointer;
+}
