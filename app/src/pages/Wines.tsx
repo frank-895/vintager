@@ -8,6 +8,14 @@ import Dialog from '../components/Dialog'
 import WineForm from '../components/WineForm'
 import WineCard from '../components/WineCard'
 
+function ChevronDownIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
 type WineWithNotes = Wine & { tasting_notes?: string[] }
 
 export default function Wines() {
@@ -310,18 +318,21 @@ export default function Wines() {
 
                 <div>
                   <div className="mb-2 text-sm font-medium text-[#111827]">Sort by</div>
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value as any)}
-                    className="w-full rounded-lg border border-black/10 bg-white px-3 py-2"
-                  >
-                    <option value="name_asc">Name (A–Z)</option>
-                    <option value="name_desc">Name (Z–A)</option>
-                    <option value="vintage_desc">Vintage (newest)</option>
-                    <option value="vintage_asc">Vintage (oldest)</option>
-                    <option value="price_asc">Price (low → high)</option>
-                    <option value="price_desc">Price (high → low)</option>
-                  </select>
+                  <div className="relative">
+                    <select
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value as any)}
+                      className="w-full appearance-none rounded-full border border-black/10 bg-white px-4 py-2 pr-10 text-sm ring-1 ring-black/5 transition focus:border-[color:var(--brand-primary)] focus:ring-[color:var(--brand-primary)]/30"
+                    >
+                      <option value="name_asc">Name (A–Z)</option>
+                      <option value="name_desc">Name (Z–A)</option>
+                      <option value="vintage_desc">Vintage (newest)</option>
+                      <option value="vintage_asc">Vintage (oldest)</option>
+                      <option value="price_asc">Price (low → high)</option>
+                      <option value="price_desc">Price (high → low)</option>
+                    </select>
+                    <ChevronDownIcon className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[color:var(--brand-primary)]/70" />
+                  </div>
                 </div>
 
                 <div>
@@ -544,18 +555,21 @@ export default function Wines() {
 
             <div>
               <div className="mb-2 text-sm font-medium text-[#111827]">Sort by</div>
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as any)}
-                className="w-full rounded-lg border border-black/10 bg-white px-3 py-2"
-              >
-                <option value="name_asc">Name (A–Z)</option>
-                <option value="name_desc">Name (Z–A)</option>
-                <option value="vintage_desc">Vintage (newest)</option>
-                <option value="vintage_asc">Vintage (oldest)</option>
-                <option value="price_asc">Price (low → high)</option>
-                <option value="price_desc">Price (high → low)</option>
-              </select>
+              <div className="relative">
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as any)}
+                  className="w-full appearance-none rounded-full border border-black/10 bg-white px-4 py-2 pr-10 text-sm ring-1 ring-black/5 transition focus:border-[color:var(--brand-primary)] focus:ring-[color:var(--brand-primary)]/30"
+                >
+                  <option value="name_asc">Name (A–Z)</option>
+                  <option value="name_desc">Name (Z–A)</option>
+                  <option value="vintage_desc">Vintage (newest)</option>
+                  <option value="vintage_asc">Vintage (oldest)</option>
+                  <option value="price_asc">Price (low → high)</option>
+                  <option value="price_desc">Price (high → low)</option>
+                </select>
+                <ChevronDownIcon className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[color:var(--brand-primary)]/70" />
+              </div>
             </div>
 
             <div>
