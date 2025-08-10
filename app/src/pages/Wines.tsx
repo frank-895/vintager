@@ -5,6 +5,7 @@ import { BRAND } from '../constants/branding'
 import { useAuth } from '../context/AuthContext'
 import Layout from '../components/Layout'
 import ResponsiveImage from '../components/ResponsiveImage'
+import Dialog from '../components/Dialog'
 
 type WineWithNotes = Wine & { tasting_notes?: string[] }
 
@@ -78,6 +79,7 @@ export default function Wines() {
   }, [wines])
 
   const { isAdmin } = useAuth()
+  const [confirmOpen, setConfirmOpen] = useState(false)
   return (
     <Layout>
       <div
@@ -139,11 +141,19 @@ export default function Wines() {
                             <button className="rounded-full bg-white/90 px-3 py-1 text-xs text-[#111827] ring-1 ring-black/10 hover:bg-white">
                               Edit
                             </button>
-                            <button className="rounded-full bg-[color:var(--brand-primary)]/90 p-2 text-white ring-1 ring-black/10 hover:bg-[color:var(--brand-primary)]" aria-label="Delete">
+                            <a
+                              onClick={(e) => {
+                                e.preventDefault()
+                                setConfirmOpen(true)
+                              }}
+                              href="#"
+                              className="rounded-full bg-[color:var(--brand-primary)]/90 p-2 text-white ring-1 ring-black/10 hover:bg-[color:var(--brand-primary)]"
+                              aria-label="Delete"
+                            >
                               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M3 6h18M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2m-8 0 1 14a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2l1-14" />
                               </svg>
-                            </button>
+                            </a>
                           </div>
                         )}
                         {w.price !== undefined && w.price !== null && (
@@ -185,6 +195,24 @@ export default function Wines() {
           </div>
         )}
         </div>
+        <Dialog
+          open={confirmOpen}
+          onClose={() => setConfirmOpen(false)}
+          title="No changes will be made."
+          titleClassName="text-lg font-semibold text-red-600"
+          footer={
+            <div className="flex gap-3">
+              <button className="rounded-full border border-black/10 px-5 py-2 text-[#111827] hover:bg-black/5" onClick={() => setConfirmOpen(false)}>
+                Cancel
+              </button>
+              <button className="rounded-full bg-red-600 px-5 py-2 text-white opacity-90 hover:opacity-100" onClick={() => setConfirmOpen(false)}>
+                Delete
+              </button>
+            </div>
+          }
+        >
+          This is a playground app. The delete functionality is not currently implemented.
+        </Dialog>
       </div>
     </Layout>
   )
