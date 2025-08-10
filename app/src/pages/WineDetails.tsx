@@ -26,6 +26,7 @@ export default function WineDetails() {
   const [wine, setWine] = useState<Wine | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
+  const [tastingNotes, setTastingNotes] = useState<string[]>([])
 
   useEffect(() => {
     async function load() {
@@ -41,6 +42,26 @@ export default function WineDetails() {
 
       if (error) setError(error.message)
       setWine((data as any) || null)
+      // Load tasting notes for this wine
+      if (!error && data) {
+        const wineId = Number((data as any).id)
+        const { data: mappings, error: mapErr } = await supabase
+          .from('wine_tast_note')
+          .select('tasting_note_id')
+          .eq('wine_id', wineId)
+        if (!mapErr && mappings && mappings.length > 0) {
+          const ids = mappings.map((m: any) => m.tasting_note_id)
+          const { data: notes, error: notesErr } = await supabase
+            .from('tasting_note')
+            .select('id, tasting_note')
+            .in('id', ids)
+          if (!notesErr && notes) {
+            setTastingNotes(notes.map((n: any) => n.tasting_note as string))
+          }
+        } else {
+          setTastingNotes([])
+        }
+      }
       setLoading(false)
     }
     if (id) load()
@@ -114,6 +135,21 @@ export default function WineDetails() {
                   <Scale labelLeft="Dry" labelRight="Sweet" value={Number(wine.dry_sweet ?? 0)} />
                   <Scale labelLeft="Soft" labelRight="Acidic" value={Number(wine.soft_acidic ?? 0)} />
                 </div>
+
+                {tastingNotes.length > 0 && (
+                  <div className="mt-6">
+                    <h2 className="text-lg font-medium text-[#111827]" style={{ fontFamily: 'var(--brand-font-display)' }}>
+                      Tasting notes
+                    </h2>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {tastingNotes.map((t) => (
+                        <span key={t} className="rounded-full bg-[color:var(--brand-primary)]/10 px-3 py-1 text-xs text-[color:var(--brand-primary)]">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 <div className="mt-8">
                   <h2 className="text-lg font-medium text-[#111827]" style={{ fontFamily: 'var(--brand-font-display)' }}>
