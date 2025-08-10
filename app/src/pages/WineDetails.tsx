@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabaseClient'
 import type { Wine } from '../types/db'
 import Layout from '../components/Layout'
 import { BRAND } from '../constants/branding'
+import ResponsiveImage from '../components/ResponsiveImage'
 
 function Scale({ labelLeft, labelRight, value }: { labelLeft: string; labelRight: string; value: number }) {
   const clamped = Math.max(0, Math.min(5, Number(value) || 0))
@@ -93,7 +94,12 @@ export default function WineDetails() {
             <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[320px_1fr]">
               <div className="relative overflow-hidden rounded-2xl bg-white ring-1 ring-black/5 max-w-full xs:max-w-none mx-auto xs:mx-0 self-start lg:self-center">
                 <div className="w-full h-96 xs:h-96 sm:h-96 lg:h-96">
-                  <img src={wine.image || '/hero_image.png'} alt={wine.name} className="h-full w-full object-cover" />
+                  <ResponsiveImage
+                    src={wine.image || '/hero_image.png'}
+                    alt={wine.name}
+                    className="h-full w-full object-cover"
+                    sizes="(max-width: 768px) 90vw, 320px"
+                  />
                 </div>
                 {wine.price !== undefined && wine.price !== null && (
                   <div className="absolute bottom-3 right-3 rounded-full bg-[color:var(--brand-primary)] px-4 py-2 text-white shadow-sm">
