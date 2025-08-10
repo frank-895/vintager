@@ -253,13 +253,19 @@ export default function Wines() {
           open={confirmOpen}
           onClose={() => setConfirmOpen(false)}
           title="No changes will be made."
-          titleClassName="text-lg font-semibold text-red-600"
+          titleClassName="text-lg font-semibold text-[color:var(--brand-primary)]"
           footer={
             <div className="flex gap-3">
-              <button className="rounded-full border border-black/10 px-5 py-2 text-[#111827] hover:bg-black/5" onClick={() => setConfirmOpen(false)}>
+              <button
+                className="rounded-full border border-[color:var(--brand-primary)] px-5 py-2 text-[color:var(--brand-primary)] hover:bg-[color:var(--brand-primary)]/10"
+                onClick={() => setConfirmOpen(false)}
+              >
                 Cancel
               </button>
-              <button className="rounded-full bg-red-600 px-5 py-2 text-white opacity-90 hover:opacity-100" onClick={() => setConfirmOpen(false)}>
+              <button
+                className="rounded-full bg-[color:var(--brand-primary)] px-5 py-2 text-white hover:opacity-95"
+                onClick={() => setConfirmOpen(false)}
+              >
                 Delete
               </button>
             </div>
