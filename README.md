@@ -2,8 +2,6 @@
 
 Modern, customizable wine menus for hospitality — with a focus on clarity, discovery, and a delightful mobile experience.
 
-- **Live demo**: [vintager.vercel.app](https://vintager.vercel.app/)
-
 ### What is Vintager?
 Vintager helps you present and manage your wine program. It’s designed for sommeliers, the service team, and guests to get the right information fast — while keeping the experience polished and consistent.
 
